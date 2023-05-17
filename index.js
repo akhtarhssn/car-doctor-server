@@ -84,8 +84,23 @@ async function run() {
     });
 
     // UPDATE METHOD
-    app.put("/bookings/:id", async (req, res) => {
+    app.patch("/bookings/:id", async (req, res) => {
+      const id = req.params.id;
       const updateBookings = req.body;
+
+      console.log(updateBookings);
+
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: updateBookings.status,
+        },
+      };
+      const result = await orderCollection.updateOne(query, updateDoc, {
+        new: true,
+      });
+      console.log(result);
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
